@@ -5,7 +5,9 @@ const resetButton = document.querySelector("#reset");
 const theTimer = document.querySelector(".timer");
 
 
-timer = [0,0,0,0];
+var timer = [0,0,0,0];
+var interval;
+var timerRunning = false;
 
 // Adiciona zero inicial aos números <= 9 (apenas para estética):
 
@@ -42,6 +44,7 @@ function spellCheck() {
     let originTextMatch = originText.substring(0, textEntered.length)
     if(textEntered == originText){
 
+        clearInterval(interval);
         testWrapper.style.borderColor = "#429890";
 
     }else{
@@ -62,16 +65,25 @@ function start(){
     let textEnteredLength = testArea.value.length;
     console.log(textEnteredLength);
 
-    if(textEnteredLength === 0 ){
+    if(textEnteredLength === 0 && !timerRunning){
 
-        setInterval(runTimer, 10);
+        timerRunning = true;
+        interval = setInterval(runTimer, 10);
 
 }
 console.log(textEnteredLength);
 }
+
 // Função de recomeçar:
 function reset() {
-    console.log("O botão de recomeçar foi clicado.");
+    clearInterval(interval);
+    interval = null;
+    timer = [0,0,0,0];
+    timerRunning = false;
+
+    testArea.value ="";
+    theTimer.innerHTML = "00:00:00";
+    testWrapper.style.borderColor = "grey";
 }
 
 // Listeners de eventos para entrada de teclado e o botão de recomeçar:
